@@ -19,8 +19,7 @@ const mockDB = [
     return mockDB.filter((entry) => entry.destination === destination);
   };
   
-  export const postMockFeedback = async (newFeedback) => {
-    mockDB.push(newFeedback);
+  export const postMockFeedback = async (destination, newFeedback) => {
+    mockDB.push({ ...newFeedback, destination });
     return { success: true };
   };
-  
