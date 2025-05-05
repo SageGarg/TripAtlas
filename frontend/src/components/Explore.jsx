@@ -3,10 +3,24 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const countries = [
-  { name: "United States", code: "us", image: "/images/us.jpg" },
-  { name: "Cancun", code: "cancun", image: "/images/cancun.jpg" },
-  { name: "India", code: "india", image: "/images/india.jpg" },
+  {
+    name: "United States",
+    code: "us",
+    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "Cancun",
+    code: "cancun",
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    name: "India",
+    code: "india",
+    image: "https://images.unsplash.com/photo-1548013146-72479768bada?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aW5kaWF8ZW58MHx8MHx8fDA%3D",
+  },
 ];
+
+
 
 function Explore() {
   const navigate = useNavigate();
