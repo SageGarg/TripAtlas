@@ -12,26 +12,32 @@ function AuthForm() {
   const [confirmPassword, setConfirmPassword] = React.useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!isLogin && password !== confirmPassword) {
-      alert("Passwords do not match.");
-      return;
+  if (!isLogin && password !== confirmPassword) {
+    alert("Passwords do not match.");
+    return;
+  }
+
+  const url = isLogin
+    ? "http://localhost:8080/auth/login"
+    : "http://localhost:8080/auth/register";
+
+  try {
+    await axios.post(url, { email, password });
+
+    if (isLogin) {
+      alert("Welcome back, traveler!");
+      navigate("/explore"); // 👈 Redirect on login
+    } else {
+      alert("Registration successful! Please log in.");
+      navigate("/login");
     }
+  } catch (err) {
+    alert("Something went wrong. Please try again.");
+  }
+};
 
-    const url = isLogin
-      ? "http://localhost:8080/auth/login"
-      : "http://localhost:8080/auth/register";
-
-    try {
-      await axios.post(url, { email, password });
-
-      alert(isLogin ? "Welcome back, traveler!" : "Registration successful! Please log in.");
-      if (!isLogin) navigate("/login");
-    } catch (err) {
-      alert("Something went wrong. Please try again.");
-    }
-  };
 
   return (
     <div className="bg-yellow rounded-2xl shadow-xl p-8 w-full max-w-md mx-auto mt-10">
