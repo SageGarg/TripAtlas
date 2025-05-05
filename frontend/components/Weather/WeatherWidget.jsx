@@ -12,28 +12,30 @@ const WeatherWidget = ({ city = "Ames" }) => {
     fetchWeather();
   }, [city]);
 
-  if (!weather) return <div className="text-gray-600">Loading weather...</div>;
+  if (!weather) return <div className="text-gray-600 text-center">Loading weather...</div>;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 w-full max-w-xl mx-auto">
+    <div className="relative w-full max-w-2xl mx-auto bg-gradient-to-br from-blue-100 via-white to-blue-200 p-8 rounded-3xl shadow-xl backdrop-blur-lg border border-blue-200">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800">Weather Forecast</h3>
-          <p className="text-sm text-gray-500">Current conditions in {city}</p>
+          <h3 className="text-3xl font-bold text-gray-800">Weather in {city}</h3>
+          <p className="text-sm text-gray-600">Updated just now</p>
         </div>
         <img
           src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
           alt={weather.condition}
-          className="w-14 h-14"
+          className="w-20 h-20 drop-shadow-md"
         />
       </div>
-      <div className="flex justify-between items-center text-gray-700">
-        <div className="text-5xl font-bold">{weather.temp}°C</div>
-        <div className="text-sm text-right space-y-1">
-          <p>Condition: <span className="capitalize">{weather.condition}</span></p>
-          <p>Feels like: {weather.feels_like || weather.temp}°C</p>
-          <p>Humidity: {weather.humidity || 60}%</p>
-          <p>Wind: {weather.wind_speed || 10} km/h</p>
+      <div className="grid grid-cols-2 gap-4 text-gray-800">
+        <div className="text-center">
+          <p className="text-6xl font-extrabold">{weather.temp}°C</p>
+          <p className="capitalize text-md font-medium text-blue-700 mt-1">{weather.condition}</p>
+        </div>
+        <div className="space-y-2 text-sm">
+          <p className="flex justify-between"><span>Feels like:</span> <span>{weather.feels_like || weather.temp}°C</span></p>
+          <p className="flex justify-between"><span>Humidity:</span> <span>{weather.humidity || 60}%</span></p>
+          <p className="flex justify-between"><span>Wind Speed:</span> <span>{weather.wind_speed || 10} km/h</span></p>
         </div>
       </div>
     </div>
