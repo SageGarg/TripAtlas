@@ -4,8 +4,8 @@ import "./index.css";
 import AuthForm from "./components/AuthForm";
 import Explore from "./components/Explore"; 
 import CountryDetails from "./components/CountryDetails";
+import Navbar from "./components/Navbar";
 
-// Wrapper to access location in outer layout
 function LayoutWrapper() {
   const location = useLocation();
   const authRoutes = ["/login", "/register"];
@@ -37,6 +37,7 @@ function LayoutWrapper() {
 function App() {
   return (
     <Router>
+    <Navbar />  {/* This shows on all pages */}
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
