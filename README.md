@@ -36,8 +36,8 @@ This app is a continuation of our midterm project, rebuilt using modern full-sta
 
 | Feature                     | Owner           |
 |----------------------------|-----------------|
-| Login/Signup (JWT Auth)    | Sageena          |
-| Explore Destinations       | Sageena          |
+| Login/Signup (JWT Auth)    | Sageena          | (implementation done)
+| Explore Destinations       | Sageena          | (implementation done)
 | Feedback System            | Rishabh          |
 | Weather Integration        | Rishabh          |
 | Attraction Details         | Both             |
