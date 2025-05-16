@@ -16,6 +16,10 @@ import About from "./components/About";
 import Profile from "./components/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
+import FeedbackSubmission from "./components/Feedback/FeedbackSubmission";
+import FeedbackList from "./components/Feedback/FeedbackList";
+import SubmissionConfirmation from "./components/Feedback/SubmissionConfirmation";
+import Weather from "./components/Weather/Weather";
 
 // Layout wrapper to handle conditional rendering of Navbar and special layouts
 function LayoutWrapper() {
@@ -57,6 +61,10 @@ function LayoutWrapper() {
               </ProtectedRoute>
             } 
           />
+          <Route path="/feedback" element={<FeedbackList />} />
+          <Route path="/feedback/new" element={<FeedbackSubmission />} />
+          <Route path="/feedback/confirmation" element={<SubmissionConfirmation />} />
+          <Route path="/weather" element={<Weather />} />
         </Routes>
       )}
     </div>

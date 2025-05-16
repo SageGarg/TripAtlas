@@ -19,18 +19,17 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // CORS configuration
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:3000'], // Allow all common frontend dev ports
+  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
 }));
-
-// Middleware
-app.use(express.json()); // Parse incoming JSON
-app.use(bodyParser.json()); // For parsing application/json
-app.use(express.urlencoded({ extended: true }));
 
 // Create uploads directory if it doesn't exist
 if (!fs.existsSync(path.join(__dirname, 'uploads'))) {
@@ -50,7 +49,11 @@ app.use('/api/profile', profileRoutes);
 // Error handling middleware
 app.use(errorHandler);
 
+// Start server
 const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)

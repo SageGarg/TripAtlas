@@ -3,6 +3,9 @@ import axios from "axios";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 
+// Configure axios defaults
+axios.defaults.withCredentials = true;
+
 function AuthForm() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,7 +31,12 @@ function AuthForm() {
       : "http://localhost:8080/auth/register";
 
     try {
-      const response = await axios.post(url, { email, password });
+      const response = await axios.post(url, { email, password }, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      });
 
       if (isLogin) {
         if (response.data && response.data.token) {
