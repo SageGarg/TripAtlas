@@ -19,7 +19,7 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: 'http://localhost:5173', // frontend dev server
+  origin: ['http://localhost:5173', 'http://localhost:3000'], // Allow both common frontend dev ports
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -38,11 +38,13 @@ app.use('/auth', authRoutes);
 // Error handling middleware
 app.use(errorHandler);
 
+const PORT = process.env.PORT || 8080;
+
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected');
-    app.listen(5001, () => console.log('Server running on port 5001'));
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch(err => {
     console.error('MongoDB connection error:', err);

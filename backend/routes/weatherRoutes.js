@@ -1,8 +1,8 @@
-
 const express = require('express');
 const axios = require('axios');
 require('dotenv').config();
 const router = express.Router();
+
 router.get('/:city', async (req, res) => {
   const city = req.params.city;
   const apiKey = process.env.OPENWEATHER_API_KEY;
@@ -27,4 +27,5 @@ router.get('/:city', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch weather data' });
   }
 });
+
 module.exports = router;
