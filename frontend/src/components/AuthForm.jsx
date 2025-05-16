@@ -1,21 +1,25 @@
 import React from "react";
 import axios from "axios";
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
 
 function AuthForm() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { login } = useAuth();
   const isLogin = location.pathname === "/login";
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [error, setError] = React.useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     if (!isLogin && password !== confirmPassword) {
-      alert("Passwords do not match.");
+      setError("Passwords do not match.");
       return;
     }
 
@@ -24,17 +28,22 @@ function AuthForm() {
       : "http://localhost:8080/auth/register";
 
     try {
-      await axios.post(url, { email, password });
+      const response = await axios.post(url, { email, password });
 
       if (isLogin) {
-        alert("Welcome back, traveler!");
-        navigate("/explore"); // 👈 Redirect on login
+        if (response.data && response.data.token) {
+          login(response.data.token);
+          navigate("/explore");
+        } else {
+          setError("Invalid login response from server");
+        }
       } else {
-        alert("Registration successful! Please log in.");
+        // If registration is successful, redirect to login
+        setError("");
         navigate("/login");
       }
     } catch (err) {
-      alert("Something went wrong. Please try again.");
+      setError(err.response?.data?.msg || "Something went wrong. Please try again.");
     }
   };
 
@@ -50,6 +59,12 @@ function AuthForm() {
         <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">
           {isLogin ? "Welcome Back!" : "Create Your Account"}
         </h2>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input

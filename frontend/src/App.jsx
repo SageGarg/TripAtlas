@@ -13,9 +13,9 @@ import CountryDetails from "./components/CountryDetails";
 import Navbar from "./components/Navbar";
 import DestinationDetail from "./pages/DestinationDetail";
 import About from "./components/About";
-import FeedbackSubmission from "./components/Feedback/FeedbackSubmission";
-import SubmissionConfirmation from "./components/Feedback/SubmissionConfirmation";
-import FeedbackList from "./components/Feedback/FeedbackList";
+import Profile from "./components/Profile";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 
 // Layout wrapper to handle conditional rendering of Navbar and special layouts
 function LayoutWrapper() {
@@ -49,9 +49,14 @@ function LayoutWrapper() {
           <Route path="/explore/:countryCode" element={<CountryDetails />} />
           <Route path="/destination" element={<DestinationDetail />} />
           <Route path="/about" element={<About />} />
-          <Route path="/feedback/new" element={<FeedbackSubmission />} />
-          <Route path="/feedback" element={<FeedbackList />} />
-          <Route path="/feedback/confirmation" element={<SubmissionConfirmation />} />
+          <Route 
+            path="/profile" 
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       )}
     </div>
@@ -62,7 +67,9 @@ function LayoutWrapper() {
 function App() {
   return (
     <Router>
-      <LayoutWrapper />
+      <AuthProvider>
+        <LayoutWrapper />
+      </AuthProvider>
     </Router>
   );
 }
