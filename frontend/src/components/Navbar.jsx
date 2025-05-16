@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
   const isHome = location.pathname === '/';
 
   const handleLogout = () => {
-    alert("Logged out");
-    // TODO: Clear auth tokens or user session here if needed
+    logout();
     navigate("/");
   };
 
@@ -32,14 +33,9 @@ const Navbar = () => {
               to="/explore" 
               className={`font-medium ${isHome ? 'text-white hover:text-blue-100' : 'text-gray-700 hover:text-blue-600'}`}
             >
-              Explore
+              Explore Destinations
             </Link>
-            <Link 
-              to="/destinations" 
-              className={`font-medium ${isHome ? 'text-white hover:text-blue-100' : 'text-gray-700 hover:text-blue-600'}`}
-            >
-              Destinations
-            </Link>
+            
             <Link 
               to="/about" 
               className={`font-medium ${isHome ? 'text-white hover:text-blue-100' : 'text-gray-700 hover:text-blue-600'}`}
@@ -55,26 +51,41 @@ const Navbar = () => {
               </Link>
             )}
             <div className="flex items-center space-x-4">
-              <Link
-                to="/profile"
-                className={`px-4 py-2 rounded-md font-medium ${
-                  isHome
-                    ? 'bg-white text-blue-600 hover:bg-blue-50'
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
-                }`}
-              >
-                Profile
-              </Link>
-              <button
-                onClick={handleLogout}
-                className={`px-4 py-2 rounded-md font-medium ${
-                  isHome
-                    ? 'border-2 border-white text-white hover:bg-white hover:text-blue-600'
-                    : 'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
-                }`}
-              >
-                Logout
-              </button>
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to="/profile"
+                    className={`px-4 py-2 rounded-md font-medium ${
+                      isHome
+                        ? 'bg-white text-blue-600 hover:bg-blue-50'
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                    }`}
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className={`px-4 py-2 rounded-md font-medium ${
+                      isHome
+                        ? 'border-2 border-white text-white hover:bg-white hover:text-blue-600'
+                        : 'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
+                    }`}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className={`px-4 py-2 rounded-md font-medium ${
+                    isHome
+                      ? 'bg-white text-blue-600 hover:bg-blue-50'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  Login
+                </Link>
+              )}
             </div>
           </div>
 
@@ -111,15 +122,9 @@ const Navbar = () => {
               className="block py-2 text-gray-700 hover:text-blue-600"
               onClick={() => setIsMenuOpen(false)}
             >
-              Explore
+              Explore Destinations
             </Link>
-            <Link
-              to="/destinations"
-              className="block py-2 text-gray-700 hover:text-blue-600"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Destinations
-            </Link>
+            
             <Link
               to="/about"
               className="block py-2 text-gray-700 hover:text-blue-600"
@@ -137,22 +142,34 @@ const Navbar = () => {
               </Link>
             )}
             <div className="mt-4 space-y-2">
-              <Link
-                to="/profile"
-                className="block w-full px-4 py-2 text-center rounded-md bg-blue-600 text-white hover:bg-blue-700"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Profile
-              </Link>
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setIsMenuOpen(false);
-                }}
-                className="block w-full px-4 py-2 text-center rounded-md border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
-              >
-                Logout
-              </button>
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to="/profile"
+                    className="block w-full px-4 py-2 text-center rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="block w-full px-4 py-2 text-center rounded-md border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className="block w-full px-4 py-2 text-center rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Login
+                </Link>
+              )}
             </div>
           </div>
         )}

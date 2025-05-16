@@ -11,6 +11,7 @@ const feedbackRoutes = require('./routes/feedbackRoutes');
 const weatherRoutes = require('./routes/weatherRoutes');
 const weatherCRUDRoutes = require('./routes/weatherCRUDRoutes');
 const authRoutes = require('./routes/auth');
+const profileRoutes = require('./routes/profile');
 
 // Middleware for error handling
 const errorHandler = require('./middleware/errorHandler');
@@ -22,7 +23,7 @@ app.use(cors({
   origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:3000'], // Allow all common frontend dev ports
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
 }));
 
 // Middleware
@@ -35,6 +36,7 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/weather', weatherRoutes);
 app.use('/api/weatherCRUD', weatherCRUDRoutes);
 app.use('/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
