@@ -4,12 +4,13 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path');
+const fs = require('fs');
 
 // Import routes
 const destinationRoutes = require('./routes/destinationRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
 const weatherRoutes = require('./routes/weatherRoutes');
-const weatherCRUDRoutes = require('./routes/weatherCRUDRoutes');
 const authRoutes = require('./routes/auth');
 
 // Middleware for error handling
@@ -28,12 +29,20 @@ app.use(cors({
 // Middleware
 app.use(express.json()); // Parse incoming JSON
 app.use(bodyParser.json()); // For parsing application/json
+app.use(express.urlencoded({ extended: true }));
+
+// Create uploads directory if it doesn't exist
+if (!fs.existsSync(path.join(__dirname, 'uploads'))) {
+  fs.mkdirSync(path.join(__dirname, 'uploads'));
+}
+
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/destinations', destinationRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/weather', weatherRoutes);
-app.use('/api/weatherCRUD', weatherCRUDRoutes);
 app.use('/auth', authRoutes);
 
 // Error handling middleware

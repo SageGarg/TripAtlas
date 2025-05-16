@@ -13,6 +13,10 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
   return (
     <nav className={`${isHome ? 'absolute w-full bg-transparent' : 'bg-white shadow-md'} px-6 py-4 z-50`}>
       <div className="max-w-7xl mx-auto">
@@ -39,6 +43,18 @@ const Navbar = () => {
               className={`font-medium ${isHome ? 'text-white hover:text-blue-100' : 'text-gray-700 hover:text-blue-600'}`}
             >
               Destinations
+            </Link>
+            <Link 
+              to="/feedback"
+              className={`font-medium ${isHome ? 'text-white hover:text-blue-100' : 'text-gray-700 hover:text-blue-600'}`}
+            >
+              Travel Stories
+            </Link>
+            <Link 
+              to="/feedback/new" 
+              className={`font-medium ${isHome ? 'text-white hover:text-blue-100' : 'text-gray-700 hover:text-blue-600'}`}
+            >
+              Share Experience
             </Link>
             <Link 
               to="/about" 
@@ -119,6 +135,20 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Destinations
+            </Link>
+            <Link
+              to="/feedback"
+              className="block py-2 text-gray-700 hover:text-blue-600"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Travel Stories
+            </Link>
+            <Link
+              to="/feedback/new"
+              className="block py-2 text-gray-700 hover:text-blue-600"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Share Experience
             </Link>
             <Link
               to="/about"
