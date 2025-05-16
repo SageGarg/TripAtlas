@@ -2,9 +2,10 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import "./index.css";
 import AuthForm from "./components/AuthForm";
-import Explore from "./components/Explore"; 
+import Explore from "./components/Explore";
 import CountryDetails from "./components/CountryDetails";
 import Navbar from "./components/Navbar";
+import DestinationDetail from "../pages/DestinationDetail.jsx";
 
 function LayoutWrapper() {
   const location = useLocation();
@@ -30,36 +31,26 @@ function LayoutWrapper() {
     <Routes>
       <Route path="/explore" element={<Explore />} />
       <Route path="/explore/:countryCode" element={<CountryDetails />} />
+      <Route path="/destination" element={<DestinationDetail />} />
     </Routes>
   );
 }
 
+// frontend/src/App.jsx
 function App() {
   return (
     <Router>
-    <Navbar />  {/* This shows on all pages */}
+      <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<AuthForm type="login" />} />
+        <Route path="/register" element={<AuthForm type="register" />} />
+        <Route path="/destination" element={<DestinationDetail />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/explore/:countryCode" element={<CountryDetails />} />
       </Routes>
-      <LayoutWrapper />
     </Router>
   );
 }
 
 export default App;
-
-
-
-
-//Testing
-
-// function App() {
-//   return (
-//     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-//       <h1 className="text-4xl font-bold text-blue-600">Hello, TravelMate!</h1>
-//     </div>
-//   );
-// }
-
-// export default App;
-

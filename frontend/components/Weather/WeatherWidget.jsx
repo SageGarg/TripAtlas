@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { getMockWeather } from "../../services/mockWeatherServices";
+import axios from "axios";
 
 const WeatherWidget = ({ city = "Ames" }) => {
   const [weather, setWeather] = useState(null);
 
   useEffect(() => {
     const fetchWeather = async () => {
-      const data = await getMockWeather(city);
-      setWeather(data);
+      try {
+        const res = await axios.get(`http://localhost:8080/api/weather/${city}`); // Updated port
+        setWeather(res.data);
+      } catch (error) {
+        console.error("Failed to fetch weather:", error);
+      }
     };
+
     fetchWeather();
   }, [city]);
 
@@ -33,9 +38,9 @@ const WeatherWidget = ({ city = "Ames" }) => {
           <p className="capitalize text-md font-medium text-blue-700 mt-1">{weather.condition}</p>
         </div>
         <div className="space-y-2 text-sm">
-          <p className="flex justify-between"><span>Feels like:</span> <span>{weather.feels_like || weather.temp}°C</span></p>
-          <p className="flex justify-between"><span>Humidity:</span> <span>{weather.humidity || 60}%</span></p>
-          <p className="flex justify-between"><span>Wind Speed:</span> <span>{weather.wind_speed || 10} km/h</span></p>
+          <p className="flex justify-between"><span>Feels like:</span> <span>{weather.feels_like}°C</span></p>
+          <p className="flex justify-between"><span>Humidity:</span> <span>{weather.humidity}%</span></p>
+          <p className="flex justify-between"><span>Wind Speed:</span> <span>{weather.wind_speed} km/h</span></p>
         </div>
       </div>
     </div>
