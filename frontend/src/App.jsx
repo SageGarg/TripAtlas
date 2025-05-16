@@ -12,6 +12,7 @@ import Explore from "./components/Explore";
 import CountryDetails from "./components/CountryDetails";
 import Navbar from "./components/Navbar";
 import DestinationDetail from "../pages/DestinationDetail.jsx";
+import About from "./components/About";
 
 // Layout wrapper to handle conditional rendering of Navbar and special layouts
 function LayoutWrapper() {
@@ -44,6 +45,7 @@ function LayoutWrapper() {
           <Route path="/explore" element={<Explore />} />
           <Route path="/explore/:countryCode" element={<CountryDetails />} />
           <Route path="/destination" element={<DestinationDetail />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       )}
     </div>
