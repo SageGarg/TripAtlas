@@ -2,12 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import WeatherWidget from "./Weather/WeatherWidget";
 
 function CountryDetails() {
   const { countryCode } = useParams();
   const [destination, setDestination] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedPlace, setSelectedPlace] = useState(null);
 
   useEffect(() => {
     const fetchDestination = async () => {
@@ -31,6 +33,14 @@ function CountryDetails() {
 
     fetchDestination();
   }, [countryCode]);
+
+  const handlePlaceClick = (place) => {
+    setSelectedPlace(place);
+  };
+
+  const closeWeatherModal = () => {
+    setSelectedPlace(null);
+  };
 
   if (loading) {
     return (
@@ -88,7 +98,8 @@ function CountryDetails() {
           {destination.places && destination.places.map((place, index) => (
             <div
               key={place._id || index}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              onClick={() => handlePlaceClick(place)}
+              className="cursor-pointer bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
             >
               <img
                 src={place.imageUrl}
@@ -110,6 +121,24 @@ function CountryDetails() {
             </div>
           ))}
         </div>
+
+        {/* Weather Modal */}
+        {selectedPlace && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-xl p-6 max-w-2xl w-full relative">
+              <button
+                onClick={closeWeatherModal}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                Weather in {selectedPlace.name}
+              </h3>
+              <WeatherWidget city={selectedPlace.name} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

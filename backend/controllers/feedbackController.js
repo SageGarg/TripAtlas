@@ -1,90 +1,117 @@
-const Feedback = require('../models/Feedback.js');
+const Feedback = require('../models/Feedback');
 
-// GET all feedback
-exports.getAllFeedback = async (req, res, next) => {
+// Get all feedback and blog posts
+exports.getAllFeedback = async (req, res) => {
   try {
-    const feedback = await Feedback.find();
+    const feedback = await Feedback.find()
+      .sort({ createdAt: -1 }); // Sort by newest first
     res.json(feedback);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    console.error('Error fetching feedback:', error);
+    res.status(500).json({ message: 'Error fetching feedback', error: error.message });
   }
 };
 
-// GET feedback by MongoDB ObjectId
-exports.getFeedbackById = async (req, res, next) => {
+// Get feedback by ID
+exports.getFeedbackById = async (req, res) => {
   try {
     const feedback = await Feedback.findById(req.params.id);
-    if (!feedback) return res.status(404).json({ message: 'Feedback not found' });
-    res.json(feedback);
-  } catch (err) {
-    next(err);
-  }
-};
-
-// GET feedback by city (e.g., /by-city/Ames)
-exports.getFeedbackByCity = async (req, res, next) => {
-    try {
-        const feedback = await Feedback.find({
-            destination: req.params.city  // Changed from city to destination
-          });
-      if (!feedback || feedback.length === 0) {
-        return res.status(404).json({ message: `No feedback found for city: ${req.params.city}` });
-      }
-      res.json(feedback);
-    } catch (err) {
-      next(err);
+    if (!feedback) {
+      return res.status(404).json({ message: 'Feedback not found' });
     }
-};
-
-// POST create new feedback
-exports.createFeedback = async (req, res, next) => {
-  try {
-    const { user, message, rating, city, destination } = req.body;
-    if (!user || !message) return res.status(400).json({ message: 'User and message are required' });
-
-    const newFeedback = new Feedback({ user, message, rating, city, destination });
-    const saved = await newFeedback.save();
-    res.status(201).json(saved);
-  } catch (err) {
-    next(err);
+    res.json(feedback);
+  } catch (error) {
+    console.error('Error fetching feedback:', error);
+    res.status(500).json({ message: 'Error fetching feedback', error: error.message });
   }
 };
 
-// PUT update feedback by ID
-exports.updateFeedback = async (req, res, next) => {
+// Create new feedback
+exports.createFeedback = async (req, res) => {
   try {
-    const updated = await Feedback.findByIdAndUpdate(
+    const {
+      title,
+      destination,
+      content,
+      rating,
+      category,
+      visitDate,
+      author
+    } = req.body;
+
+    const feedback = new Feedback({
+      title,
+      destination,
+      content,
+      rating,
+      category,
+      visitDate,
+      author: author || 'Anonymous'
+    });
+
+    const savedFeedback = await feedback.save();
+    res.status(201).json(savedFeedback);
+  } catch (error) {
+    console.error('Error creating feedback:', error);
+    res.status(500).json({ message: 'Error creating feedback', error: error.message });
+  }
+};
+
+// Update feedback
+exports.updateFeedback = async (req, res) => {
+  try {
+    const feedback = await Feedback.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true, runValidators: true }
     );
-    if (!updated) return res.status(404).json({ message: 'Feedback not found' });
-    res.json(updated);
-  } catch (err) {
-    next(err);
-  }
-};
-
-// DELETE feedback by ID
-exports.deleteFeedback = async (req, res, next) => {
-  try {
-    const deleted = await Feedback.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ message: 'Feedback not found' });
-    res.json({ message: 'Feedback deleted' });
-  } catch (err) {
-    next(err);
-  }
-};
-
-// GET feedback by destination
-exports.getFeedbackByDestination = async (req, res, next) => {
-  try {
-    const feedback = await Feedback.find({ destination: req.params.destination });
-    if (!feedback || feedback.length === 0) {
-      return res.status(404).json({ message: `No feedback found for destination: ${req.params.destination}` });
+    if (!feedback) {
+      return res.status(404).json({ message: 'Feedback not found' });
     }
     res.json(feedback);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    console.error('Error updating feedback:', error);
+    res.status(500).json({ message: 'Error updating feedback', error: error.message });
+  }
+};
+
+// Delete feedback
+exports.deleteFeedback = async (req, res) => {
+  try {
+    const feedback = await Feedback.findByIdAndDelete(req.params.id);
+    if (!feedback) {
+      return res.status(404).json({ message: 'Feedback not found' });
+    }
+    res.json({ message: 'Feedback deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting feedback:', error);
+    res.status(500).json({ message: 'Error deleting feedback', error: error.message });
+  }
+};
+
+// Get feedback by category
+exports.getFeedbackByCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    const feedback = await Feedback.find({ category })
+      .sort({ createdAt: -1 });
+    res.json(feedback);
+  } catch (error) {
+    console.error('Error fetching feedback by category:', error);
+    res.status(500).json({ message: 'Error fetching feedback', error: error.message });
+  }
+};
+
+// Get feedback by destination
+exports.getFeedbackByDestination = async (req, res) => {
+  try {
+    const { destination } = req.params;
+    const feedback = await Feedback.find({ 
+      destination: { $regex: destination, $options: 'i' } 
+    }).sort({ createdAt: -1 });
+    res.json(feedback);
+  } catch (error) {
+    console.error('Error fetching feedback by destination:', error);
+    res.status(500).json({ message: 'Error fetching feedback', error: error.message });
   }
 };

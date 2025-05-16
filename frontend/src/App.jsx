@@ -11,7 +11,7 @@ import AuthForm from "./components/AuthForm";
 import Explore from "./components/Explore";
 import CountryDetails from "./components/CountryDetails";
 import Navbar from "./components/Navbar";
-import DestinationDetail from "../pages/DestinationDetail.jsx";
+import DestinationDetail from "./pages/DestinationDetail";
 import About from "./components/About";
 import Profile from "./components/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
