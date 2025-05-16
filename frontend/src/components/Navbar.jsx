@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === '/';
+
+  const handleLogout = () => {
+    alert("Logged out");
+    // TODO: Clear auth tokens or user session here if needed
+    navigate("/");
+  };
 
   return (
     <nav className={`${isHome ? 'absolute w-full bg-transparent' : 'bg-white shadow-md'} px-6 py-4 z-50`}>
@@ -59,10 +66,7 @@ const Navbar = () => {
                 Profile
               </Link>
               <button
-                onClick={() => {
-                  // Implement logout functionality here
-                  alert("Logged out"); // Placeholder
-                }}
+                onClick={handleLogout}
                 className={`px-4 py-2 rounded-md font-medium ${
                   isHome
                     ? 'border-2 border-white text-white hover:bg-white hover:text-blue-600'
@@ -142,8 +146,7 @@ const Navbar = () => {
               </Link>
               <button
                 onClick={() => {
-                  // Implement logout functionality here
-                  alert("Logged out");
+                  handleLogout();
                   setIsMenuOpen(false);
                 }}
                 className="block w-full px-4 py-2 text-center rounded-md border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
