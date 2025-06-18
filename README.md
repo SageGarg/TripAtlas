@@ -1,5 +1,6 @@
 # TravelMate 🌍
 
+**GITLAB - GIT PUSH ORIGIN MAIN && GITHUB - GIT PUSH GITHUB MAIN
 **COMS 3190 - Final Project (Spring 2025)**  
 Team PS_3  
 Sageena Garg | Rishabh Jain
